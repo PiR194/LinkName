@@ -3,6 +3,7 @@ import { StyleSheet, Text, View } from 'react-native';
 
 
 import React from "react";
+import Navigation from './Navigation/Navigation';
 
 // import Navigation from './navigation/Navigation';
 // import StackNavigation from './navigation/StackNavigation';
@@ -32,8 +33,8 @@ export default function App() {
   return (
     // <Provider store={store}>
       <SafeAreaProvider>
-        {/* <Navigation/> */}
-        <Home/>
+        <Navigation/>
+        {/* <Home/> */}
       </SafeAreaProvider>
     // </Provider>
   );

@@ -1,63 +1,93 @@
-import { StyleSheet, Text, View, TouchableNativeFeedback, Image } from 'react-native';
-// import { useDispatch } from 'react-redux';
-// import { useEffect } from 'react';
-// import { getAllCards } from "../redux/actions/actionSelection"
-// import StorageHeart from '../service/AsyncStorage';
-// import { setList } from '../redux/actions/action_setFavs';
-// import Navigation from '../navigation/Navigation';
-// @ts-ignore //
-export default function Home() {
-    
+import React from 'react';
+import { StyleSheet, Text, View, TouchableNativeFeedback } from 'react-native';
+import { MainTheme } from '../Style/Themes';
+
+export default function Home({ navigation }) {
+
+    const lists = [
+        { name: 'Liste Total', itemCount: 5 },
+        { name: 'Nombre de tag', itemCount: 8 },
+        { name: 'Nombre de favoris', itemCount: 5 },
+    ];
+
+
+    // Calculer le nombre total d'éléments dans toutes les listes
+    const getTotalItemCount = () => {
+        return lists.reduce((total, list) => total + list.itemCount, 0);
+    };
+
+
+    // Naviguer vers la liste globale
+    const navigateToGlobalList = () => {
+        navigation.navigate('GlobalList'); // Assure-toi d'avoir une route nommée 'GlobalList' dans ta navigation
+    };
+
     return (
-        <View>
+        <View style={styles.container}>
             <View style={styles.centered}>
                 <Text style={styles.title}>LinkName</Text>
-                <Text style={styles.txt}>Votre gestionnaire de list de pseudo </Text>
+                <Text style={styles.txt}>Votre gestionnaire de listes de pseudos</Text>
+            </View>
+            <View style={styles.listContainer}>
+                {lists.map((list, index) => (
+                    <View key={index} style={styles.listItem}>
+                        <Text>{list.name}</Text>
+                        <Text>{list.itemCount} éléments</Text>
+                    </View>
+                ))}
+            </View>
+            <View style={styles.footer}>
+                <TouchableNativeFeedback onPress={navigateToGlobalList}>
+                    <View style={styles.button}>
+                        <Text style={styles.buttonText}>Voir la liste globale ({getTotalItemCount()} éléments)</Text>
+                    </View>
+                </TouchableNativeFeedback>
             </View>
         </View>
-    )
-};
+    );
+}
 
-    const styles = StyleSheet.create({
+const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: "#ac9585",
-        alignItems: "center"
+        backgroundColor: MainTheme.colors.background,
+        alignItems: 'center',
     },
     centered: {
-        alignItems: "center"
+        alignItems: 'center',
     },
     title: {
         fontSize: 56,
         fontWeight: 'bold',
-        
-    },
-    MidArea: {
-        justifyContent: "center", 
-        
+        marginTop: 20,
     },
     txt: {
         fontSize: 20,
+        marginBottom: 20,
     },
-    butContain: {
-        flexDirection: 'row'
+    listContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        width: '100%',
+        marginBottom: 20,
+    },
+    listItem: {
+        alignItems: 'center',
+    },
+    footer: {
+        alignItems: 'center',
+    },
 
-    },
-    ige:{
-        maxWidth: "110%",
-        maxHeight: 400,
-    },
-
-    ButtonStyle :{
-        backgroundColor: "#F5F5F5",
+    //* Boutons
+    button: {
+        backgroundColor: '#F5F5F5',
         borderRadius: 15,
         padding: 20,
-        color: "black",
-        fontSize : 36,
-        width: "45%",
-        textAlign: 'center',
-        margin: 10,
+        width: '80%',
+        alignItems: 'center',
+    },
+    buttonText: {
+        fontSize: 18,
         fontWeight: 'bold',
     },
-
 });
