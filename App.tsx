@@ -3,7 +3,7 @@ import { StyleSheet, Text, View } from 'react-native';
 
 
 import React from "react";
-import Navigation from './Navigation/Navigation';
+import { AppNavigator } from './Navigation/Navigation';
 
 // import Navigation from './navigation/Navigation';
 // import StackNavigation from './navigation/StackNavigation';
@@ -27,16 +27,28 @@ import {
   SafeAreaProvider,
 } from 'react-native-safe-area-context';
 import Home from './Screen/Home';
+import { NavigationContainer } from '@react-navigation/native';
+
+
+// export default function App() {
+//   return (
+//     // <Provider store={store}>
+//       <SafeAreaProvider>
+//         <Navigation/>
+//         {/* <Home/> */}
+//       </SafeAreaProvider>
+//     // </Provider>
+//   );
+// }
 
 
 export default function App() {
   return (
-    // <Provider store={store}>
-      <SafeAreaProvider>
-        <Navigation/>
-        {/* <Home/> */}
-      </SafeAreaProvider>
-    // </Provider>
+    <SafeAreaProvider>
+      <NavigationContainer>
+        <AppNavigator />
+      </NavigationContainer>
+    </SafeAreaProvider>
   );
 }
 

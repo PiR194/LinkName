@@ -3,6 +3,10 @@ import { StyleSheet, Text, View, TouchableNativeFeedback } from 'react-native';
 import { MainTheme } from '../Style/Themes';
 import DisplayListInfo from '../Components/DisplayListInfo';
 
+
+import { AddItem, AddTag } from './AddItem';
+
+
 export default function Home({ navigation }) {
 
     const lists = [
@@ -51,12 +55,12 @@ export default function Home({ navigation }) {
 
 
                 <View style={styles.addView}>
-                    <TouchableNativeFeedback onPress={navigateToGlobalList}>
+                    <TouchableNativeFeedback onPress={() => navigation.navigate('AddTag')}>
                         <View style={styles.button}>
                             <Text style={styles.buttonText}> Add Tag </Text>
                         </View>
                     </TouchableNativeFeedback>
-                    <TouchableNativeFeedback onPress={navigateToGlobalList}>
+                    <TouchableNativeFeedback onPress={() => navigation.navigate('AddItem')}>
                         <View style={styles.button}>
                             <Text style={styles.buttonText}> Add Item </Text>
                         </View>
