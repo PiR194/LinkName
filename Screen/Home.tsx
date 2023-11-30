@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View, TouchableNativeFeedback } from 'react-native';
 import { MainTheme } from '../Style/Themes';
 import DisplayListInfo from '../Components/DisplayListInfo';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 import { AddItem, AddTag } from './AddItem';
@@ -9,22 +10,34 @@ import { AddItem, AddTag } from './AddItem';
 
 export default function Home({ navigation }) {
 
-    const lists = [
-        { name: 'Liste Total', itemCount: 5 },
-        { name: 'Nombre de tag', itemCount: 8 },
-        { name: 'Nombre de favoris', itemCount: 5 },
-    ];
+    const [listInfo, setListInfo] = useState([]);
 
+    useEffect(() => {
 
+        // Récupérer les informations de la liste depuis AsyncStorage
+        const fetchListInfo = async () => {
+            try {
+                const storedListInfo = await AsyncStorage.getItem('HomeGetListInfo');
+                if (storedListInfo) {
+                    setListInfo(JSON.parse(storedListInfo));
+                }
+            } catch (error) {
+                console.error('Erreur lors de la récupération des informations de la liste', error);
+            }
+        };
+    
+        fetchListInfo();
+        }, []);
+    
     // Calculer le nombre total d'éléments dans toutes les listes
     const getTotalItemCount = () => {
-        return lists.reduce((total, list) => total + list.itemCount, 0);
+        //lists.reduce((total, list) => total + list.itemCount, 0);
+        return listInfo.length;
     };
 
-
-    // Naviguer vers la liste globale
+      // Naviguer vers la page GlobalList
     const navigateToGlobalList = () => {
-        navigation.navigate('GlobalList'); // Assure-toi d'avoir une route nommée 'GlobalList' dans ta navigation
+        navigation.navigate('GlobalList', { listInfo });
     };
 
     return (
@@ -42,7 +55,9 @@ export default function Home({ navigation }) {
                 ))}
             </View> */}
             <View style={styles.listContainer}>
-                <DisplayListInfo txt="Liste Total : 5 éléments "/>
+                {/* <DisplayListInfo txt="Liste Total : 5 éléments "/> */}
+                <DisplayListInfo txt={`Liste Total : ${getTotalItemCount()} éléments`} />
+
                 <DisplayListInfo txt="Nombre de tag : 8 éléments "/>
                 <DisplayListInfo txt="Nombre de favoris : 2 éléments "/>
             </View>

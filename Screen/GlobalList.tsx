@@ -1,6 +1,7 @@
 
-import React, { useState}  from 'react';
-import {  StyleSheet, Text, View, FlatList, TouchableNativeFeedback, TouchableHighlight, TextInput } from 'react-native';
+import React, { useState, useEffect}  from 'react';
+import {  StyleSheet, Text, View, FlatList, TouchableNativeFeedback, TouchableHighlight, TextInput, Button } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 const Mylist = [
@@ -29,7 +30,7 @@ const Item = ({title}: ItemProps) => (
 );
 
 //@ts-ignore
-export default function GlobalList({navigation}){
+export default function GlobalList({navigation, route}){
     
     
 
@@ -39,13 +40,28 @@ export default function GlobalList({navigation}){
     //* Search : 
     const [searchValue, setSearchValue] = useState('');
 
-    //@ts-ignore
-    //const filteredList = nList.filter(item => item.name.toLowerCase().includes(searchValue.toLowerCase()));
 
-    // const dispatch = useDispatch()
-    // const HandleAddFav = (props : CardProps) => {
-    //     dispatch(setFavList(props));
-    // }
+
+    //*Storage
+    const [list, setList] = useState([]);
+
+    useEffect(() => {
+        // Maj de la liste lorsque la page GlobalList est montée
+        const fetchList = async () => {
+            try {
+                // Récupérer la liste depuis AsyncStorage
+                const storedList = await AsyncStorage.getItem('GlobalListGetList');
+                if (storedList) {
+                    setList(JSON.parse(storedList));
+                }
+            } catch (error) {
+                console.error('Erreur lors de la récupération de la liste', error);
+            }
+        };
+
+        fetchList();
+    }, []);
+    
 
     return (
         <View style={styles.container}>
@@ -57,15 +73,14 @@ export default function GlobalList({navigation}){
                 placeholder="Rechercher une carte..."
             />
 
-
             <FlatList
                     data={Mylist}
                     renderItem={({item}) => <Item title={item.title} />}
                     keyExtractor={item => item.id}
                 />
-        </View>
 
-        
+            <Button title="Retour à l'accueil" onPress={() => navigation.goBack()} />
+        </View>
     );
 }
 
