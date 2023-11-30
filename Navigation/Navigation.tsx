@@ -43,7 +43,7 @@ const Tab = createBottomTabNavigator();
 
 const HomeStack = () => (
   <Stack.Navigator initialRouteName="Home">
-    <Stack.Screen name="Home" component={Home} options={{ headerShown: false }} />
+    <Stack.Screen name="Home" component={Home} options={{ headerShown: true }} />
     <Stack.Screen name="GlobalList" component={GlobalList} options={{ title: 'Liste Global' }} />
     <Stack.Screen name="AddTag" component={AddTag} options={{ title: 'Add Tag' }} />
     <Stack.Screen name="AddItem" component={AddItem} options={{ title: 'Add Item' }} />
@@ -52,9 +52,10 @@ const HomeStack = () => (
 
 export const AppNavigator = () => (
   <Tab.Navigator initialRouteName="Home">
-    <Tab.Screen name="Home" component={HomeStack} options={{ title: 'Home' }} />
+    <Tab.Screen name="Home" component={HomeStack} options={{ headerShown: false }} />
     <Tab.Screen name="GlobalList" component={GlobalList} options={{ title: 'Liste Global' }} />
-    <Tab.Screen name="AddItem" component={AddItem} options={{ title: 'Add Item' }} />
-    <Tab.Screen name="AddTag" component={AddTag} options={{ title: 'Add Tag' }} />
+    {/* <Tab.Screen name="AddItem" component={AddItem} options={{ title: 'Add Item' }} />
+    <Tab.Screen name="AddTag" component={AddTag} options={{ title: 'Add Tag' }} /> */}
   </Tab.Navigator>
 );
+
