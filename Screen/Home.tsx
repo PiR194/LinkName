@@ -36,8 +36,20 @@ export default function Home({ navigation }) {
     };
 
       // Naviguer vers la page GlobalList
-    const navigateToGlobalList = () => {
-        navigation.navigate('GlobalList', { listInfo });
+    const navigateToGlobalList = async () => {
+        
+        //! item stubbé pour tester
+        const dummyItem = { id: 'dummyId', title: 'Dummy Item' };
+        const updatedList = [...listInfo, dummyItem]; // +=
+
+        try {
+            await AsyncStorage.setItem('HomeGetListInfo', JSON.stringify(updatedList));
+            setListInfo(updatedList);
+        } catch (error) {
+            console.error('Erreur lors de l\'ajout de l\'item dummy', error);
+        }
+
+        navigation.navigate('GlobalList', { listInfo: updatedList });
     };
 
     return (

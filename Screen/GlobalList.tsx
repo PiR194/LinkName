@@ -44,6 +44,9 @@ export default function GlobalList({navigation, route}){
 
     //*Storage
     const [list, setList] = useState([]);
+    const listTest = route.params.listInfo || []; //todo delete
+
+
 
     useEffect(() => {
         // Maj de la liste lorsque la page GlobalList est montée
@@ -74,7 +77,7 @@ export default function GlobalList({navigation, route}){
             />
 
             <FlatList
-                    data={Mylist}
+                    data={listTest}
                     renderItem={({item}) => <Item title={item.title} />}
                     keyExtractor={item => item.id}
                 />
