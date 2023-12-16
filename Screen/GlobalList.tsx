@@ -82,7 +82,7 @@ export default function GlobalList({navigation, route}){
                     keyExtractor={item => item.id}
                 />
 
-            <Button title="Retour à l'accueil" onPress={() => navigation.goBack()} />
+            {/* <Button title="Retour à l'accueil" onPress={() => navigation.goBack()} /> */}
         </View>
     );
 }

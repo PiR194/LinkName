@@ -8,6 +8,7 @@ import GlobalList from '../Screen/GlobalList';
 import { AddItem, AddTag } from '../Screen/AddItem';
 import StackNavigator from './StackNavigator';
 import { createStackNavigator } from '@react-navigation/stack';
+import Blank from '../Screen/Blank';
 
 
 
@@ -53,9 +54,7 @@ const HomeStack = () => (
 export const AppNavigator = () => (
   <Tab.Navigator initialRouteName="Home">
     <Tab.Screen name="HomeTab" component={HomeStack} options={{ headerShown: false }} />
-    <Tab.Screen name="GlobalList" component={GlobalList} options={{ title: 'Liste Global' }} />
-    {/* <Tab.Screen name="AddItem" component={AddItem} options={{ title: 'Add Item' }} />
-    <Tab.Screen name="AddTag" component={AddTag} options={{ title: 'Add Tag' }} /> */}
+    <Tab.Screen name="Blank Page" component={Blank}/>
   </Tab.Navigator>
 );
 

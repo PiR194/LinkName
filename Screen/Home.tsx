@@ -101,11 +101,11 @@ export default function Home({ navigation }) {
                         <Text style={styles.buttonText}>Effacer asyncStorage</Text>
                     </View>
                 </TouchableNativeFeedback>
-                <TouchableNativeFeedback onPress={majListInfo}>
+                {/* <TouchableNativeFeedback onPress={majListInfo}>
                     <View style={styles.button}>
                         <Text style={styles.buttonText}>maj asyncStorage</Text>
                     </View>
-                </TouchableNativeFeedback>
+                </TouchableNativeFeedback> */}
             </View>
         </View>
     );
@@ -147,6 +147,7 @@ const styles = StyleSheet.create({
         justifyContent:'space-evenly',
         flexDirection:'row',
         marginTop:15,
+        marginBottom:15,
         gap:50
     },
 
