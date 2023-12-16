@@ -29,6 +29,28 @@ export default function Home({ navigation }) {
         fetchListInfo();
         }, []);
     
+    // Supprimer les informations de la liste depuis AsyncStorage
+    const clearListInfo = async () => {
+        try {
+            await AsyncStorage.removeItem('HomeGetListInfo');
+            setListInfo([]);
+        } catch (error) {
+            console.error('Erreur lors de la suppression des données', error);
+        }
+    };
+
+    const majListInfo = async () => {
+        try {
+            const storedListInfo = await AsyncStorage.getItem('HomeGetListInfo');
+            if (storedListInfo) {
+                setListInfo(JSON.parse(storedListInfo));
+            }
+        } catch (error) {
+            console.error('Erreur lors de la récupération des informations de la liste', error);
+        }
+};
+
+
     // Calculer le nombre total d'éléments dans toutes les listes
     const getTotalItemCount = () => {
         //lists.reduce((total, list) => total + list.itemCount, 0);
@@ -37,19 +59,7 @@ export default function Home({ navigation }) {
 
       // Naviguer vers la page GlobalList
     const navigateToGlobalList = async () => {
-        
-        //! item stubbé pour tester
-        const dummyItem = { id: 'dummyId', title: 'Dummy Item' };
-        const updatedList = [...listInfo, dummyItem]; // +=
-
-        try {
-            await AsyncStorage.setItem('HomeGetListInfo', JSON.stringify(updatedList));
-            setListInfo(updatedList);
-        } catch (error) {
-            console.error('Erreur lors de l\'ajout de l\'item dummy', error);
-        }
-
-        navigation.navigate('GlobalList', { listInfo: updatedList });
+        navigation.navigate('GlobalList', { listInfo });
     };
 
     return (
@@ -58,14 +68,6 @@ export default function Home({ navigation }) {
                 <Text style={styles.title}>LinkName</Text>
                 <Text style={styles.txt}>Votre gestionnaire de listes de pseudos</Text>
             </View>
-            {/* <View style={styles.listContainer}>
-                {lists.map((list, index) => (
-                    <View key={index} style={styles.listItem}>
-                        <Text>{list.name}</Text>
-                        <Text>{list.itemCount} éléments</Text>
-                    </View>
-                ))}
-            </View> */}
             <View style={styles.listContainer}>
                 {/* <DisplayListInfo txt="Liste Total : 5 éléments "/> */}
                 <DisplayListInfo txt={`Liste Total : ${getTotalItemCount()} éléments`} />
@@ -80,19 +82,30 @@ export default function Home({ navigation }) {
                     </View>
                 </TouchableNativeFeedback>
 
-
                 <View style={styles.addView}>
                     <TouchableNativeFeedback onPress={() => navigation.navigate('AddTag')}>
                         <View style={styles.button}>
                             <Text style={styles.buttonText}> Add Tag </Text>
                         </View>
                     </TouchableNativeFeedback>
-                    <TouchableNativeFeedback onPress={() => navigation.navigate('AddItem')}>
+                    <TouchableNativeFeedback onPress={() => {
+                        navigation.navigate('AddItem', { setListInfo, listInfo });
+                    }}>
                         <View style={styles.button}>
                             <Text style={styles.buttonText}> Add Item </Text>
                         </View>
                     </TouchableNativeFeedback>
                 </View>
+                <TouchableNativeFeedback onPress={clearListInfo}>
+                    <View style={styles.button}>
+                        <Text style={styles.buttonText}>Effacer asyncStorage</Text>
+                    </View>
+                </TouchableNativeFeedback>
+                <TouchableNativeFeedback onPress={majListInfo}>
+                    <View style={styles.button}>
+                        <Text style={styles.buttonText}>maj asyncStorage</Text>
+                    </View>
+                </TouchableNativeFeedback>
             </View>
         </View>
     );

@@ -1,7 +1,13 @@
 // Import des composants React et React Native nécessaires
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
+//import { v4 as uuidv4 } from 'uuid'; //! ne marche pas avec react native
+import uuid from 'react-native-uuid';
 
+
+
+//? séparer les composants malgré le fait qu'ils soient très similaires pour plus de clarté ?
 // Composant de formulaire générique
 const AddForm = ({ onSubmit }) => {
     const [inputValue, setInputValue] = useState('');
@@ -30,23 +36,39 @@ const AddForm = ({ onSubmit }) => {
 
     // Exemple de page de formulaire pour ajouter un tag
     export const AddTag = ({ navigation }) => {
-    const handleAddTag = (tagName) => {
-        // Ici, tu peux traiter la logique d'ajout du tag (ex. appel à l'API, mise à jour de l'état, etc.)
-        console.log(`Tag ajouté : ${tagName}`);
-        // Naviguer vers l'écran souhaité après l'ajout
-        navigation.goBack();
+        const handleAddTag = (tagName) => {
+            // Ici, tu peux traiter la logique d'ajout du tag (ex. appel à l'API, mise à jour de l'état, etc.)
+            console.log(`Tag ajouté : ${tagName}`);
+            // Naviguer vers l'écran souhaité après l'ajout
+            navigation.goBack();
+        };
+
+        return <AddForm onSubmit={handleAddTag} />;
     };
 
-    return <AddForm onSubmit={handleAddTag} />;
-};
+
+
+
 
 // Exemple de page de formulaire pour ajouter un élément
-export const AddItem = ({ navigation }) => {
-    const handleAddItem = (itemName) => {
-    // Ici, tu peux traiter la logique d'ajout de l'élément
-    console.log(`Élément ajouté : ${itemName}`);
-    // Naviguer vers l'écran souhaité après l'ajout
-    navigation.goBack();
+export const AddItem = ({ navigation, route }) => {
+    const { setListInfo, listInfo } = route.params;
+
+    console.log(`lst de base : ${listInfo}`);
+    const handleAddItem = async (itemName : string) => {
+        const newItem = { id: uuid.v4(), title: itemName };
+        const updatedList = [...listInfo, newItem];
+        console.log(`Élément ajouté : ${itemName}`);
+
+        try {
+            await AsyncStorage.setItem('HomeGetListInfo', JSON.stringify(updatedList));
+        } catch (error) {
+            console.error('Erreur lors de l\'ajout de l\'élément', error);
+        }
+
+        setListInfo(updatedList); // on met à jour la liste principale
+        console.log(`liste principale : ${listInfo}`);
+        navigation.goBack();
     };
 
     return <AddForm onSubmit={handleAddItem} />;
@@ -82,4 +104,3 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
     },
 });
-
